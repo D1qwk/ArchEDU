@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .page-container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
+        .page-title { font-size: 2.5rem; margin-bottom: 2rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .contact-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
+        .contact-method { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; border-bottom: 1px solid var(--border-light); }
+        .contact-method:last-child { border-bottom: none; }
+        .contact-icon { width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
+        .contact-info h3 { margin-bottom: 0.25rem; }
+        .contact-info p, .contact-info a { color: var(--text-secondary); text-decoration: none; }
+        .contact-info a:hover { color: var(--primary-light); }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <!-- такой же хедер -->
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="contact_page.title">Свяжитесь с нами</h1>
+        <div class="contact-card">
+            <div class="contact-method">
+                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                <div class="contact-info">
+                    <h3 data-i18n="contact_page.email">Email</h3>
+                    <a href="mailto:support@archedu.kz">support@archedu.kz</a>
+                    <p data-i18n="contact_page.email_desc">Ответим в течение 24 часов</p>
+                </div>
+            </div>
+            <div class="contact-method">
+                <div class="contact-icon"><i class="fab fa-telegram"></i></div>
+                <div class="contact-info">
+                    <h3>Telegram</h3>
+                    <a href="https://t.me/archedu_support" target="_blank">@archedu_support</a>
+                    <p data-i18n="contact_page.telegram_desc">Оперативная поддержка в будние дни с 9:00 до 18:00</p>
+                </div>
+            </div>
+            <div class="contact-method">
+                <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                <div class="contact-info">
+                    <h3>WhatsApp</h3>
+                    <a href="https://wa.me/77001234567" target="_blank">+7 (700) 123-45-67</a>
+                    <p data-i18n="contact_page.whatsapp_desc">Для быстрых вопросов</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <!-- футер -->
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script>
+        (async function() {
+            await I18n.init();
+            const user = Auth.getCurrentUser();
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-register').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                const link = document.getElementById('greeting-link');
+                link.textContent = I18n.t('common.welcome_user', { name: user.firstName || user.username });
+                link.href = '../student/index.html';
+                greeting.style.display = 'block';
+            }
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await I18n.setLanguage(btn.dataset.lang);
+                    location.reload();
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

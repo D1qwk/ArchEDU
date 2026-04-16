@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="login.title">Вход - ArchEdu</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div id="header-container"></div>
+
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <h2 data-i18n="login.header">Вход в аккаунт</h2>
+                    <p data-i18n="login.subtitle">Добро пожаловать обратно! Войдите чтобы продолжить обучение</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="email" data-i18n="login.email">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="your@email.com" data-i18n-placeholder="login.email_placeholder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" data-i18n="login.password">Пароль</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" required 
+                                   data-i18n-placeholder="login.password_placeholder">
+                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" name="remember" id="remember">
+                            <span class="checkmark"></span>
+                            <span data-i18n="login.remember_me">Запомнить меня</span>
+                        </label>
+                        <a href="#" class="forgot-password" data-i18n="login.forgot_password">Забыли пароль?</a>
+                    </div>
+                    
+                    <div id="login-error" class="auth-error" style="display: none;"></div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-large">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span data-i18n="login.submit">Войти</span>
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span data-i18n="login.or">или</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn-social google" onclick="Auth.socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="btn-social github" onclick="Auth.socialLogin('github')">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>
+                        <span data-i18n="login.no_account">Нет аккаунта?</span>
+                        <a href="register.html" data-i18n="login.register_link">Зарегистрироваться</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="auth-decoration">
+                <div class="decoration-content">
+                    <h3 data-i18n="login.decoration.title">ArchEdu Learning Platform</h3>
+                    <p data-i18n="login.decoration.text">Продолжите свой путь в мир архитектуры программного обеспечения</p>
+                    <div class="decoration-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-i18n="login.decoration.feature1">8 архитектурных стилей</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-i18n="login.decoration.feature2">128+ практических уроков</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-i18n="login.decoration.feature3">Интерактивные тесты</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="assets/js/core/i18n.js"></script>
+    <script src="assets/js/core/auth.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/modules/ai-chat.js"></script>
+<script src="assets/js/modules/accessibility.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await I18n.init();
+            await loadComponent('header-container', 'components/header.html');
+            await loadComponent('footer-container', 'components/footer.html');
+            
+            // Если уже авторизован, редирект на главную
+            if (Auth.isAuthenticated()) {
+                window.location.href = 'index.html';
+            }
+            
+            // Обработка формы входа
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+                
+                const errorDiv = document.getElementById('login-error');
+                
+                try {
+                    const result = await Auth.login(email, password, remember);
+                    
+                    if (result.success) {
+                        // Показать сообщение об успехе
+                        showNotification(I18n.t('login.success'), 'success');
+                        
+                        // Редирект на главную
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        errorDiv.textContent = result.error || I18n.t('login.error');
+                        errorDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    errorDiv.textContent = I18n.t('login.error');
+                    errorDiv.style.display = 'block';
+                }
+            });
+        });
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.parentElement.querySelector('.toggle-password i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        function showNotification(message, type) {
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        async function loadComponent(containerId, url) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                container.innerHTML = html;
+                I18n.translatePage();
+                initLanguageSwitcher();
+            } catch (error) {
+                console.error('Failed to load component:', error);
+            }
+        }
+        
+        function initLanguageSwitcher() {
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    I18n.setLanguage(btn.dataset.lang);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

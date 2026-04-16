@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .page-container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
+        .page-title { font-size: 2.5rem; margin-bottom: 2rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .faq-item { background: var(--bg-card); border-radius: var(--radius-lg); margin-bottom: 1rem; border: 1px solid var(--border-color); overflow: hidden; }
+        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .faq-question i { transition: transform 0.3s; color: var(--primary-light); }
+        .faq-answer { padding: 0 1.5rem 1.5rem; color: var(--text-secondary); line-height: 1.7; display: none; }
+        .faq-item.active .faq-answer { display: block; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <!-- хедер -->
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="faq_page.title">Часто задаваемые вопросы</h1>
+        
+        <div class="faq-item active">
+            <div class="faq-question">
+                <span data-i18n="faq_page.q1">Как получить доступ к курсам?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer" data-i18n="faq_page.a1">Зарегистрируйтесь на платформе, и все курсы станут доступны бесплатно. Вы можете проходить их в любом порядке.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span data-i18n="faq_page.q2">Выдаётся ли сертификат?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer" data-i18n="faq_page.a2">Да, после успешного прохождения финального теста (не менее 70% правильных ответов) вы получите именной сертификат.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span data-i18n="faq_page.q3">Нужно ли знать программирование?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer" data-i18n="faq_page.a3">Базовые знания программирования (на любом языке) приветствуются, но курс ориентирован на архитектурные концепции, понятные и начинающим.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span data-i18n="faq_page.q4">Можно ли учиться с телефона?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer" data-i18n="faq_page.a4">Да, платформа полностью адаптирована под мобильные устройства.</div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <!-- футер -->
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script>
+        (async function() {
+            await I18n.init();
+            const user = Auth.getCurrentUser();
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-register').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                const link = document.getElementById('greeting-link');
+                link.textContent = I18n.t('common.welcome_user', { name: user.firstName || user.username });
+                link.href = '../student/index.html';
+                greeting.style.display = 'block';
+            }
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await I18n.setLanguage(btn.dataset.lang);
+                    location.reload();
+                });
+            });
+            // FAQ accordion
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.addEventListener('click', () => {
+                    q.parentElement.classList.toggle('active');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

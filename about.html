@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .page-container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
+        .page-title { font-size: 2.5rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .content-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; margin-bottom: 2rem; border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
+        .content-card h2 { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .content-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo"><a href="../../index.html">ArchEdu</a></div>
+            <nav class="main-nav">
+                <a href="../../index.html" data-i18n="nav.home">Главная</a>
+                <a href="../../index.html#architectures-section" data-i18n="nav.courses">Курсы</a>
+                <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+            </nav>
+            <div class="user-actions">
+                <div class="lang-switcher">
+                    <button data-lang="ru" class="lang-btn active">RU</button>
+                    <button data-lang="kk" class="lang-btn">ҚАЗ</button>
+                </div>
+                <div id="user-greeting" class="user-greeting" style="display:none;">
+                    <a href="../student/index.html" id="greeting-link"></a>
+                </div>
+                <a href="../../login.html" class="btn-login" data-i18n="common.login">Войти</a>
+                <a href="../../register.html" class="btn-register" data-i18n="common.register">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="about_page.title">О платформе ArchEdu</h1>
+        
+        <div class="content-card">
+            <h2><i class="fas fa-rocket" style="color: var(--primary-color);"></i> <span data-i18n="about_page.mission_title">Наша миссия</span></h2>
+            <p data-i18n="about_page.mission_text">ArchEdu создан, чтобы сделать глубокие знания об архитектуре программного обеспечения доступными для каждого разработчика. Мы верим, что понимание архитектурных стилей и паттернов — ключ к созданию масштабируемых, надёжных и эффективных систем.</p>
+        </div>
+
+        <div class="content-card">
+            <h2><i class="fas fa-users" style="color: var(--primary-color);"></i> <span data-i18n="about_page.team_title">Наша команда</span></h2>
+            <p data-i18n="about_page.team_text">Мы — команда практикующих архитекторов и разработчиков с опытом работы в ведущих IT-компаниях. Наши курсы основаны на реальных проектах и лучших мировых практиках. Каждый преподаватель — действующий эксперт, который ежедневно сталкивается с вызовами современной разработки.</p>
+        </div>
+
+        <div class="content-card">
+            <h2><i class="fas fa-bullseye" style="color: var(--primary-color);"></i> <span data-i18n="about_page.values_title">Наши ценности</span></h2>
+            <p data-i18n="about_page.values_text">Качество контента, практическая направленность и поддержка студентов на каждом этапе обучения. Мы постоянно обновляем материалы, следуя за трендами индустрии, и стремимся создать сообщество профессионалов, готовых делиться опытом.</p>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">ArchEdu</div>
+                    <p data-i18n="footer.copyright">© 2026 ArchEdu. Все права защищены.</p>
+                    <div class="social-links">
+                        <a href="https://t.me/archedu" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://instagram.com/archedu" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/77001234567" class="social-icon" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.about_project">О проекте</h4>
+                    <ul><li><a href="about.html" data-i18n="nav.about">О нас</a></li><li><a href="team.html" data-i18n="footer.team">Команда</a></li></ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.support">Поддержка</h4>
+                    <ul><li><a href="contact.html" data-i18n="nav.contact">Контакты</a></li><li><a href="faq.html" data-i18n="footer.faq">FAQ</a></li></ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.legal">Правовая информация</h4>
+                    <ul><li><a href="privacy.html" data-i18n="footer.privacy_policy">Политика конфиденциальности</a></li><li><a href="terms.html" data-i18n="footer.terms_of_use">Условия использования</a></li></ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.made_with">Сделано с ❤️ для IT-сообщества Казахстана</span>
+                <div class="footer-links"><a href="#" data-i18n="footer.sitemap">Карта сайта</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script>
+        (async function() {
+            await I18n.init();
+            const user = Auth.getCurrentUser();
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-register').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                const link = document.getElementById('greeting-link');
+                link.textContent = I18n.t('common.welcome_user', { name: user.firstName || user.username });
+                link.href = '../student/index.html';
+                greeting.style.display = 'block';
+            }
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await I18n.setLanguage(btn.dataset.lang);
+                    location.reload();
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

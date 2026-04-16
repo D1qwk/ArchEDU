@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Условия использования – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .page-container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
+        .page-title { font-size: 2.5rem; margin-bottom: 2rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .content-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-color); }
+        .content-card h2 { margin: 1.5rem 0 1rem; }
+        .content-card p { color: var(--text-secondary); line-height: 1.7; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <!-- хедер -->
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="terms_page.title">Условия использования</h1>
+        <div class="content-card">
+            <p data-i18n="terms_page.last_updated">Последнее обновление: 16 апреля 2026 г.</p>
+            <h2 data-i18n="terms_page.section1_title">1. Общие положения</h2>
+            <p data-i18n="terms_page.section1_text">Используя платформу ArchEdu, вы соглашаетесь с настоящими условиями. Платформа предоставляется «как есть» для образовательных целей.</p>
+            <h2 data-i18n="terms_page.section2_title">2. Регистрация</h2>
+            <p data-i18n="terms_page.section2_text">Вы обязуетесь предоставлять достоверную информацию при регистрации и не передавать свои учётные данные третьим лицам.</p>
+            <h2 data-i18n="terms_page.section3_title">3. Интеллектуальная собственность</h2>
+            <p data-i18n="terms_page.section3_text">Все материалы курсов защищены авторским правом. Запрещается копирование и распространение без разрешения.</p>
+            <h2 data-i18n="terms_page.section4_title">4. Ограничение ответственности</h2>
+            <p data-i18n="terms_page.section4_text">Мы не несём ответственности за любые убытки, возникшие в результате использования платформы.</p>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <!-- футер -->
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script>
+        (async function() {
+            await I18n.init();
+            const user = Auth.getCurrentUser();
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-register').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                const link = document.getElementById('greeting-link');
+                link.textContent = I18n.t('common.welcome_user', { name: user.firstName || user.username });
+                link.href = '../student/index.html';
+                greeting.style.display = 'block';
+            }
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await I18n.setLanguage(btn.dataset.lang);
+                    location.reload();
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

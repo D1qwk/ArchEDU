@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Команда – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .page-container { max-width: 1100px; margin: 0 auto; padding: 140px 20px 60px; }
+        .page-title { font-size: 2.5rem; margin-bottom: 2rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; justify-content: center; }
+        .team-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; text-align: center; border: 1px solid var(--border-color); backdrop-filter: blur(10px); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .team-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-glow); border-color: var(--primary-color); }
+        .team-photo { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 1.5rem; border: 3px solid var(--primary-color); object-fit: cover; box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3); }
+        .team-name { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .team-role { color: var(--primary-light); font-weight: 600; margin-bottom: 0.75rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .team-bio { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .team-detail { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-light); display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .team-detail span { display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); font-size: 0.9rem; }
+        .team-detail i { color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo"><a href="../../index.html">ArchEdu</a></div>
+            <nav class="main-nav">
+                <a href="../../index.html" data-i18n="nav.home">Главная</a>
+                <a href="../../index.html#architectures-section" data-i18n="nav.courses">Курсы</a>
+                <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+            </nav>
+            <div class="user-actions">
+                <div class="lang-switcher">
+                    <button data-lang="ru" class="lang-btn active">RU</button>
+                    <button data-lang="kk" class="lang-btn">ҚАЗ</button>
+                </div>
+                <div id="user-greeting" class="user-greeting" style="display:none;">
+                    <a href="../student/index.html" id="greeting-link"></a>
+                </div>
+                <a href="../../login.html" class="btn-login" data-i18n="common.login">Войти</a>
+                <a href="../../register.html" class="btn-register" data-i18n="common.register">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="team_page.title">Наша команда</h1>
+        
+        <div class="team-grid">
+            <!-- Преподаватель -->
+            <div class="team-card">
+                <img src="https://i.ibb.co/j9XmgxpV/Chat-GPT-Image-16-2026-10-32-43.png" alt="Қайрат Айым" class="team-photo">
+                <h3 class="team-name">Қайрат Айым Қайратқызы</h3>
+                <p class="team-role" data-i18n="team_page.role_lead">Ведущий архитектор, преподаватель</p>
+                <p class="team-bio" data-i18n="team_page.bio_lead_expanded">Эксперт в области архитектуры ПО с 5+ годами опыта. Специализируется на распределённых системах, базах данных (MySQL, PostgreSQL) и облачных технологиях (AWS, Azure). Автор курсов по микросервисам, serverless и паттернам проектирования. Помогла более 5000 студентов освоить современные подходы к разработке.</p>
+                <div class="team-detail">
+                    <span><i class="fas fa-briefcase"></i> Lead Architect в TechCorp</span>
+                    <span><i class="fas fa-graduation-cap"></i> Магистр Computer Science</span>
+                </div>
+            </div>
+
+            <!-- Студент -->
+            <div class="team-card">
+                <img src="https://ui-avatars.com/api/?name=Berik+Didar&size=150&background=EC4899&color=fff&bold=true" alt="Берик Дидар" class="team-photo">
+                <h3 class="team-name">Берик Дидар</h3>
+                <p class="team-role" data-i18n="team_page.role_student">Full‑Stack разработчик, студент</p>
+                <p class="team-bio" data-i18n="team_page.bio_student">Студент 3 курса Almaty Polytechnic College, группа П23-3Г. Увлечён современными веб‑технологиями: React, Node.js, TypeScript. Активно участвует в разработке учебной платформы ArchEdu, реализуя интерактивные компоненты и песочницы. Помогает тестировать курсы и даёт обратную связь от лица студентов.</p>
+                <div class="team-detail">
+                    <span><i class="fas fa-code"></i> React / Node.js</span>
+                    <span><i class="fas fa-school"></i> Almaty Polytechnic College</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">ArchEdu</div>
+                    <p data-i18n="footer.copyright">© 2026 ArchEdu. Все права защищены.</p>
+                    <div class="social-links">
+                        <a href="https://t.me/archedu" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://instagram.com/archedu" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/77001234567" class="social-icon" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.about_project">О проекте</h4>
+                    <ul><li><a href="about.html" data-i18n="nav.about">О нас</a></li><li><a href="team.html" data-i18n="footer.team">Команда</a></li></ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.support">Поддержка</h4>
+                    <ul><li><a href="contact.html" data-i18n="nav.contact">Контакты</a></li><li><a href="faq.html" data-i18n="footer.faq">FAQ</a></li></ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.legal">Правовая информация</h4>
+                    <ul><li><a href="privacy.html" data-i18n="footer.privacy_policy">Политика конфиденциальности</a></li><li><a href="terms.html" data-i18n="footer.terms_of_use">Условия использования</a></li></ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.made_with">Сделано с ❤️ для IT-сообщества Казахстана</span>
+                <div class="footer-links"><a href="#" data-i18n="footer.sitemap">Карта сайта</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script>
+        (async function() {
+            await I18n.init();
+            const user = Auth.getCurrentUser();
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-register').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                const link = document.getElementById('greeting-link');
+                link.textContent = I18n.t('common.welcome_user', { name: user.firstName || user.username });
+                link.href = '../student/index.html';
+                greeting.style.display = 'block';
+            }
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await I18n.setLanguage(btn.dataset.lang);
+                    location.reload();
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

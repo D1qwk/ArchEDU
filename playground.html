@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Песочница – Pipes and Filters – ArchEdu</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/editor/editor.main.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .playground-container { max-width: 1200px; margin: 0 auto; padding: 140px 20px 60px; }
+        .playground-header { margin-bottom: 2rem; }
+        .playground-title { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-light); margin-bottom: 1.5rem; text-decoration: none; font-weight: 500; }
+        .back-link:hover { color: var(--primary-color); }
+        .editor-panel { background: var(--bg-card); border-radius: var(--radius-xl); padding: 1.5rem; border: 1px solid var(--border-color); backdrop-filter: blur(10px); margin-bottom: 2rem; }
+        .panel-title { font-size: 1.2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        #editor { height: 400px; border-radius: var(--radius-md); border: 1px solid var(--border-light); }
+        .output-panel { background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 1rem; margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-primary); min-height: 100px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; }
+        .playground-actions { display: flex; gap: 1rem; margin-top: 1rem; }
+        .example-selector { margin-left: auto; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo"><a href="../../index.html">ArchEdu</a></div>
+            <nav class="main-nav">
+                <a href="../../index.html" data-i18n="nav.home">Главная</a>
+                <a href="#" data-i18n="nav.courses">Курсы</a>
+                <a href="../../pages/shared/contact.html" data-i18n="nav.contact">Контакты</a>
+            </nav>
+            <div class="user-actions">
+                <div class="lang-switcher">
+                    <button data-lang="ru" class="lang-btn active">RU</button>
+                    <button data-lang="kk" class="lang-btn">ҚАЗ</button>
+                </div>
+                <div id="user-greeting" class="user-greeting" style="display:none;">
+                    <a href="../../pages/student/index.html" id="greeting-link"></a>
+                </div>
+                <a href="../../login.html" class="btn-login" data-i18n="common.login">Войти</a>
+                <a href="../../register.html" class="btn-register" data-i18n="common.register">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="playground-container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> <span data-i18n="lesson.back_to_course">← К курсу</span>
+        </a>
+        <div class="playground-header">
+            <h1 class="playground-title gradient-text" id="playground-title">Песочница: Pipes and Filters</h1>
+            <p style="color: var(--text-secondary);" id="playground-subtitle">Экспериментируйте с кодом: Stream API, Unix pipes, Apache Camel.</p>
+        </div>
+        <div class="editor-panel">
+            <div class="panel-title">
+                <i class="fas fa-code"></i>
+                <span id="code-editor-text">Редактор кода</span>
+                <select id="example-select" class="btn-outline example-selector" style="padding: 0.5rem 1rem;">
+                    <option value="java-stream">Java Stream API</option>
+                    <option value="unix-pipe">Unix pipe (bash)</option>
+                    <option value="camel">Apache Camel (Java DSL)</option>
+                </select>
+            </div>
+            <div id="editor"></div>
+            <div class="playground-actions">
+                <button class="btn btn-primary" id="run-btn" data-i18n="playground.run">Запустить</button>
+                <button class="btn btn-outline" id="reset-btn" data-i18n="lesson.reset">Сбросить</button>
+            </div>
+            <div class="output-panel" id="output">
+                <span style="color: var(--text-muted);" id="output-placeholder">// Вывод появится здесь</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer" style="margin-top: 3rem;">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section"><div class="footer-logo">ArchEdu</div><p data-i18n="footer.copyright">© 2026 ArchEdu. Все права защищены.</p></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/core/i18n.js"></script>
+    <script src="../../assets/js/core/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
+    <script src="../../assets/js/modules/ai-chat.js"></script>
+    <script src="../../assets/js/modules/accessibility.js"></script>
+    <script>
+        (function() {
+            let currentUser = null;
+            let editor;
+
+            const examples = {
+                ru: {
+                    'java-stream': `// Java Stream API как пример Pipes and Filters
+List<String> words = Arrays.asList("apple", "banana", "cherry", "date");
+List<String> result = words.stream()
+    .filter(w -> w.length() > 5)        // фильтр 1
+    .map(String::toUpperCase)           // фильтр 2
+    .sorted()                           // фильтр 3
+    .collect(Collectors.toList());
+System.out.println(result); // [BANANA, CHERRY]`,
+                    'unix-pipe': `# Unix pipeline – классический пример Pipes and Filters
+cat access.log | grep "ERROR" | awk '{print $1}' | sort | uniq -c
+# Объяснение:
+# cat     – читает файл (источник)
+# grep    – фильтрует строки с "ERROR"
+# awk     – извлекает первый столбец (IP-адрес)
+# sort    – сортирует IP
+# uniq -c – подсчитывает количество повторений`,
+                    'camel': `// Apache Camel route (Java DSL) – маршрутизация с фильтрами
+from("file:data/inbox")
+    .filter().xpath("/order[not(@test)]")
+    .to("jms:queue:orders")
+    .to("bean:orderService?method=process")
+    .to("file:data/outbox");`
+                },
+                kk: {
+                    'java-stream': `// Java Stream API – Pipes and Filters мысалы
+List<String> words = Arrays.asList("алма", "банан", "шие", "құрма");
+List<String> result = words.stream()
+    .filter(w -> w.length() > 5)
+    .map(String::toUpperCase)
+    .sorted()
+    .collect(Collectors.toList());
+System.out.println(result);`,
+                    'unix-pipe': `# Unix конвейері – Pipes and Filters классикалық мысалы
+cat access.log | grep "ҚАТЕ" | awk '{print $1}' | sort | uniq -c`,
+                    'camel': `// Apache Camel маршруты (Java DSL)
+from("file:data/inbox")
+    .filter().xpath("/order[not(@test)]")
+    .to("jms:queue:orders")
+    .to("bean:orderService?method=process")
+    .to("file:data/outbox");`
+                }
+            };
+
+            function safeT(key, fallback) {
+                if (typeof I18n !== 'undefined' && I18n.t) return I18n.t(key) === key ? fallback : I18n.t(key);
+                return fallback;
+            }
+
+            async function initPage() {
+                await I18n.init();
+                currentUser = Auth.getCurrentUser();
+                updateUIForAuth();
+                updateUITexts();
+                initEditor();
+                initLanguageSwitcher();
+            }
+
+            function updateUIForAuth() {
+                const gc = document.getElementById('user-greeting');
+                const gl = document.getElementById('greeting-link');
+                const lb = document.querySelector('.btn-login');
+                const rb = document.querySelector('.btn-register');
+                if (currentUser) {
+                    if (gc && gl) {
+                        const name = currentUser.firstName || currentUser.username || currentUser.email;
+                        gl.textContent = I18n.t('common.welcome_user', { name });
+                        gl.href = '../../pages/student/index.html';
+                        gc.style.display = 'block';
+                    }
+                    if (lb) lb.style.display = 'none';
+                    if (rb) rb.style.display = 'none';
+                } else {
+                    if (gc) gc.style.display = 'none';
+                    if (lb) lb.style.display = 'inline-flex';
+                    if (rb) rb.style.display = 'inline-flex';
+                }
+            }
+
+            function updateUITexts() {
+                const lang = I18n.getCurrentLanguage();
+                document.getElementById('playground-title').textContent = (lang === 'kk') ? 'Ойын алаңы: Pipes and Filters' : 'Песочница: Pipes and Filters';
+                document.getElementById('playground-subtitle').textContent = (lang === 'kk') ? 'Кодпен тәжірибе жасаңыз: Stream API, Unix pipes, Apache Camel.' : 'Экспериментируйте с кодом: Stream API, Unix pipes, Apache Camel.';
+                document.getElementById('code-editor-text').textContent = safeT('playground.code_editor', 'Редактор кода');
+                document.getElementById('run-btn').innerHTML = `<i class="fas fa-play"></i> ${safeT('playground.run', 'Запустить')}`;
+                document.getElementById('reset-btn').innerHTML = `<i class="fas fa-undo"></i> ${safeT('lesson.reset', 'Сбросить')}`;
+                document.getElementById('output-placeholder').textContent = (lang === 'kk') ? '// Нәтиже осында көрсетіледі' : '// Вывод появится здесь';
+                const select = document.getElementById('example-select');
+                const optionTexts = {
+                    ru: ['Java Stream API', 'Unix pipe (bash)', 'Apache Camel (Java DSL)'],
+                    kk: ['Java Stream API', 'Unix pipe (bash)', 'Apache Camel (Java DSL)']
+                };
+                const texts = optionTexts[lang] || optionTexts.ru;
+                for (let i = 0; i < select.options.length; i++) select.options[i].textContent = texts[i];
+            }
+
+            function initEditor() {
+                require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs' } });
+                require(['vs/editor/editor.main'], function() {
+                    const lang = I18n.getCurrentLanguage();
+                    const defaultCode = examples[lang]?.['java-stream'] || examples.ru['java-stream'];
+                    editor = monaco.editor.create(document.getElementById('editor'), {
+                        value: defaultCode,
+                        language: 'java',
+                        theme: 'vs-dark',
+                        automaticLayout: true,
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        fontFamily: 'JetBrains Mono, monospace'
+                    });
+                });
+            }
+
+            function updateEditorContent(exampleKey) {
+                const lang = I18n.getCurrentLanguage();
+                const code = examples[lang]?.[exampleKey] || examples.ru[exampleKey];
+                if (editor && code) editor.setValue(code);
+                let language = 'java';
+                if (exampleKey === 'unix-pipe') language = 'shell';
+                else if (exampleKey === 'camel') language = 'java';
+                monaco.editor.setModelLanguage(editor.getModel(), language);
+            }
+
+            function runCode() {
+                const code = editor.getValue();
+                const output = document.getElementById('output');
+                const lang = I18n.getCurrentLanguage();
+                output.innerHTML = '';
+                try {
+                    if (code.includes('stream()') || code.includes('filter') || code.includes('map')) {
+                        output.innerHTML += `<span style="color: var(--success-color);">> [Stream] Результат фильтрации: [BANANA, CHERRY]</span>\n`;
+                    } else if (code.includes('cat') || code.includes('grep') || code.includes('awk')) {
+                        output.innerHTML += `<span style="color: var(--info-color);">$ 3 192.168.1.10\n   1 10.0.0.5</span>\n`;
+                        output.innerHTML += `<span style="color: var(--text-muted);"># Симуляция вывода Unix pipeline</span>\n`;
+                    } else if (code.includes('from(') || code.includes('to(')) {
+                        output.innerHTML += `<span style="color: var(--info-color);">[Camel] Маршрут запущен. Сообщения перенаправлены.</span>\n`;
+                    } else {
+                        output.innerHTML += `<span style="color: var(--text-muted);">${lang==='ru'?'// Код успешно обработан (симуляция)':'// Код сәтті өңделді (симуляция)'}</span>\n`;
+                    }
+                } catch (e) {
+                    output.innerHTML += `<span style="color: var(--error-color);">${lang==='ru'?'Ошибка: ':'Қате: '}${e.message}</span>\n`;
+                }
+            }
+
+            function resetEditor() {
+                const select = document.getElementById('example-select');
+                updateEditorContent(select.value);
+                const lang = I18n.getCurrentLanguage();
+                document.getElementById('output').innerHTML = `<span style="color: var(--text-muted);">${lang==='ru'?'// Вывод появится здесь':'// Нәтиже осында көрсетіледі'}</span>`;
+            }
+
+            function initLanguageSwitcher() {
+                document.querySelectorAll('[data-lang]').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const lang = btn.getAttribute('data-lang');
+                        await I18n.setLanguage(lang);
+                        updateUIForAuth();
+                        updateUITexts();
+                        if (editor) updateEditorContent(document.getElementById('example-select').value);
+                        document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
+                        document.getElementById('output').innerHTML = `<span style="color: var(--text-muted);">${lang==='ru'?'// Вывод появится здесь':'// Нәтиже осында көрсетіледі'}</span>`;
+                    });
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initPage();
+                document.getElementById('run-btn').addEventListener('click', runCode);
+                document.getElementById('reset-btn').addEventListener('click', resetEditor);
+                document.getElementById('example-select').addEventListener('change', (e) => updateEditorContent(e.target.value));
+            });
+        })();
+    </script>
+</body>
+</html>

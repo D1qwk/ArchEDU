@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="register.title">Регистрация - ArchEdu</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div id="header-container"></div>
+
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 data-i18n="register.header">Создать аккаунт</h2>
+                    <p data-i18n="register.subtitle">Присоединяйтесь к сообществу и начните обучение</p>
+                </div>
+                
+                <form id="register-form" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" data-i18n="register.first_name">Имя</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="firstName" name="firstName" required 
+                                       data-i18n-placeholder="register.first_name_placeholder">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName" data-i18n="register.last_name">Фамилия</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="lastName" name="lastName" required 
+                                       data-i18n-placeholder="register.last_name_placeholder">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-email" data-i18n="register.email">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="reg-email" name="email" required 
+                                   placeholder="your@email.com" data-i18n-placeholder="register.email_placeholder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username" data-i18n="register.username">Имя пользователя</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-at"></i>
+                            <input type="text" id="username" name="username" required 
+                                   data-i18n-placeholder="register.username_placeholder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-password" data-i18n="register.password">Пароль</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="reg-password" name="password" required 
+                                       data-i18n-placeholder="register.password_placeholder">
+                                <button type="button" class="toggle-password" onclick="togglePassword('reg-password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password" data-i18n="register.confirm_password">Подтверждение</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="confirm-password" name="confirmPassword" required 
+                                       data-i18n-placeholder="register.confirm_password_placeholder">
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirm-password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="password-strength" id="password-strength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <span class="strength-text" id="strength-text"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" name="agree" id="agree" required>
+                            <span class="checkmark"></span>
+                            <span>
+                                <span data-i18n="register.agree_text">Я согласен с</span>
+                                <a href="/pages/shared/terms.html" data-i18n="register.terms">условиями использования</a>
+                                <span data-i18n="register.and">и</span>
+                                <a href="/pages/shared/privacy.html" data-i18n="register.privacy">политикой конфиденциальности</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div id="register-error" class="auth-error" style="display: none;"></div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-large">
+                        <i class="fas fa-user-plus"></i>
+                        <span data-i18n="register.submit">Зарегистрироваться</span>
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span data-i18n="register.or">или</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn-social google" onclick="Auth.socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="btn-social github" onclick="Auth.socialLogin('github')">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>
+                        <span data-i18n="register.have_account">Уже есть аккаунт?</span>
+                        <a href="login.html" data-i18n="register.login_link">Войти</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="auth-decoration">
+                <div class="decoration-content">
+                    <h3 data-i18n="register.decoration.title">Начните обучение сегодня</h3>
+                    <p data-i18n="register.decoration.text">Получите доступ к полной библиотеке курсов по архитектуре ПО</p>
+                    <div class="decoration-features">
+                        <div class="feature">
+                            <i class="fas fa-video"></i>
+                            <span data-i18n="register.decoration.feature1">Видео-уроки высокого качества</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-code"></i>
+                            <span data-i18n="register.decoration.feature2">Практические задания</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-certificate"></i>
+                            <span data-i18n="register.decoration.feature3">Сертификат об окончании</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-users"></i>
+                            <span data-i18n="register.decoration.feature4">Поддержка сообщества</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="assets/js/core/i18n.js"></script>
+    <script src="assets/js/core/auth.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/modules/ai-chat.js"></script>
+<script src="assets/js/modules/accessibility.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await I18n.init();
+            await loadComponent('header-container', 'components/header.html');
+            await loadComponent('footer-container', 'components/footer.html');
+            
+            // Если уже авторизован, редирект на главную
+            if (Auth.isAuthenticated()) {
+                window.location.href = 'index.html';
+            }
+            
+            // Отслеживание силы пароля
+            const passwordInput = document.getElementById('reg-password');
+            passwordInput.addEventListener('input', checkPasswordStrength);
+            
+            // Обработка формы регистрации
+            document.getElementById('register-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('reg-email').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                const errorDiv = document.getElementById('register-error');
+                
+                // Валидация
+                if (password !== confirmPassword) {
+                    errorDiv.textContent = I18n.t('register.password_mismatch');
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (password.length < 8) {
+                    errorDiv.textContent = I18n.t('register.password_too_short');
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                try {
+                    const result = await Auth.register({
+                        firstName,
+                        lastName,
+                        email,
+                        username,
+                        password
+                    });
+                    
+                    if (result.success) {
+                        showNotification(I18n.t('register.success'), 'success');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else {
+                        errorDiv.textContent = result.error || I18n.t('register.error');
+                        errorDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    errorDiv.textContent = I18n.t('register.error');
+                    errorDiv.style.display = 'block';
+                }
+            });
+        });
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById('reg-password').value;
+            const strengthDiv = document.getElementById('password-strength');
+            const strengthFill = document.getElementById('strength-fill');
+            const strengthText = document.getElementById('strength-text');
+            
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            strengthDiv.style.display = 'block';
+            
+            let strength = 0;
+            
+            // Критерии оценки
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            const percentage = (strength / 6) * 100;
+            strengthFill.style.width = percentage + '%';
+            
+            if (strength < 2) {
+                strengthFill.style.background = 'var(--error-color)';
+                strengthText.textContent = I18n.t('register.password_weak');
+            } else if (strength < 4) {
+                strengthFill.style.background = 'var(--warning-color)';
+                strengthText.textContent = I18n.t('register.password_medium');
+            } else {
+                strengthFill.style.background = 'var(--success-color)';
+                strengthText.textContent = I18n.t('register.password_strong');
+            }
+        }
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.parentElement.querySelector('.toggle-password i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        async function loadComponent(containerId, url) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                container.innerHTML = html;
+                I18n.translatePage();
+                initLanguageSwitcher();
+            } catch (error) {
+                console.error('Failed to load component:', error);
+            }
+        }
+        
+        function initLanguageSwitcher() {
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    I18n.setLanguage(btn.dataset.lang);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
